@@ -1,7 +1,7 @@
 import { ArrowButton } from 'src/ui/arrow-button';
 import { Button } from 'src/ui/button';
 import { useState, useRef } from 'react';
-import { useOutsideClickClose } from 'src/ui/select/hooks/useOutsideClickClose';
+import { useCloseOnOutsideClickOrEsc } from './hooks/useCloseOnOutsideClickOrEsc';
 import styles from './ArticleParamsForm.module.scss';
 import clsx from 'clsx';
 import {
@@ -11,6 +11,7 @@ import {
 	backgroundColors,
 	contentWidthArr,
 	ArticleStateType,
+	defaultArticleState,
 } from 'src/constants/articleProps';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Select } from 'src/ui/select';
@@ -44,10 +45,10 @@ export const ArticleParamsForm = ({
 	);
 
 	const asideRef = useRef(null);
-	useOutsideClickClose({
-		isOpen: formIsOpen,
-		rootRef: asideRef,
-		onChange: () => {
+	useCloseOnOutsideClickOrEsc({
+		isOpenElement: formIsOpen,
+		elementRef: asideRef,
+		onClose: () => {
 			setFormState(false);
 		},
 	});
@@ -65,11 +66,11 @@ export const ArticleParamsForm = ({
 
 	const handleFormReset = (e: React.FormEvent) => {
 		e.preventDefault();
-		setFontFamily(initialValues.fontFamilyOption);
-		setFontSize(initialValues.fontSizeOption);
-		setFontColor(initialValues.fontColor);
-		setBackgroundColor(initialValues.backgroundColor);
-		setContentWidth(initialValues.contentWidth);
+		setFontFamily(defaultArticleState.fontFamilyOption);
+		setFontSize(defaultArticleState.fontSizeOption);
+		setFontColor(defaultArticleState.fontColor);
+		setBackgroundColor(defaultArticleState.backgroundColor);
+		setContentWidth(defaultArticleState.contentWidth);
 		onReset();
 	};
 
